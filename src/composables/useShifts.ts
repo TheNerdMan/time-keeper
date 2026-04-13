@@ -240,6 +240,16 @@ function endBreak(): void {
   save()
 }
 
+function updateShift(id: string, updated: Shift): void {
+  if (currentShift.value && currentShift.value.id === id) {
+    currentShift.value = { ...updated }
+  } else {
+    const idx = allShifts.value.findIndex(s => s.id === id)
+    if (idx !== -1) allShifts.value[idx] = { ...updated }
+  }
+  save()
+}
+
 // ── Ticker ──────────────────────────────────────────────────────────────────
 
 function startTicker(): void {
@@ -274,6 +284,7 @@ export function useShifts() {
     endShift,
     startBreak,
     endBreak,
+    updateShift,
     startTicker,
     stopTicker,
     formatLocalTime,
