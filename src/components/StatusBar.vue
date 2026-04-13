@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useShifts } from '../composables/useShifts'
 import { useHolidays } from '../composables/useHolidays'
 import { formatLocalTime } from '../composables/useFormatters'
+import type { Shift } from '../types'
+import EditShiftModal from './EditShiftModal.vue'
 
-const { isWorking, isOnBreak, currentShift } = useShifts()
+const { isWorking, isOnBreak, currentShift, updateShift } = useShifts()
 const { todayIsHoliday, todayHolidayLabel } = useHolidays()
 
 const statusIcon = computed<string>(() => {
@@ -21,6 +23,21 @@ const statusText = computed<string>(() => {
   if (isOnBreak.value) return 'On break — work timer paused.'
   return 'Shift in progress — <strong>working</strong>.'
 })
+
+const editingShift = ref<Shift | null>(null)
+
+function openEditCurrent() {
+  if (!currentShift.value) return
+  editingShift.value = {
+    ...currentShift.value,
+    segments: currentShift.value.segments.map(s => ({ ...s })),
+  }
+}
+
+function handleSave(updated: Shift) {
+  updateShift(updated.id, updated)
+  editingShift.value = null
+}
 </script>
 
 <template>
@@ -30,5 +47,19 @@ const statusText = computed<string>(() => {
     <span class="status-time" v-if="currentShift">
       started {{ formatLocalTime(currentShift.startedAt) }}
     </span>
+    <button
+      v-if="currentShift"
+      class="btn btn-ghost btn-sm status-edit-btn"
+      @click="openEditCurrent"
+    >
+      ✏ edit
+    </button>
+
+    <EditShiftModal
+      v-if="editingShift"
+      :shift="editingShift"
+      @save="handleSave"
+      @cancel="editingShift = null"
+    />
   </div>
 </template>

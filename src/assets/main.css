@@ -83,6 +83,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text); font-famil
 .status-text { color: var(--text-dim); flex: 1; }
 .status-text strong { color: var(--text); }
 .status-time { font-family: var(--mono); font-size: 0.75rem; color: var(--text-dim); }
+.status-edit-btn { padding: 3px 8px; font-size: 0.68rem; border-radius: 6px; flex-shrink: 0; }
 
 /* ── Controls ── */
 .controls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }

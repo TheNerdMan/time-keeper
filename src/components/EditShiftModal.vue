@@ -45,7 +45,7 @@ function validate(): boolean {
     if (i > 0) {
       const prev = segments.value[i - 1]
       if (prev.end && seg.start < prev.end) {
-        error.value = `Segments must not overlap (segment ${i + 1} and ${i + 2}).`
+        error.value = `Segments must not overlap (segment ${i} and ${i + 1}).`
         return false
       }
     }
