@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useShifts } from '../composables/useShifts'
 import { useHolidays } from '../composables/useHolidays'
 import { formatLocalTime, formatHMS, formatHM } from '../composables/useFormatters'
-import type { HistoryEntry } from '../types'
+import type { HistoryEntry, Shift } from '../types'
+import EditShiftModal from './EditShiftModal.vue'
 
-const { workedDisplay, calcShiftWorked, buildCombinedHistory } = useShifts()
+const { workedDisplay, calcShiftWorked, buildCombinedHistory, updateShift } = useShifts()
 const { holidays, holidayDayMs, removeHoliday } = useHolidays()
 
 const combinedHistory = computed<HistoryEntry[]>(() =>
@@ -16,6 +17,19 @@ function shiftTotal(entry: HistoryEntry): string {
   if (entry.kind === 'holiday') return formatHM(holidayDayMs.value)
   if (!entry.endedAt) return workedDisplay.value
   return formatHMS(calcShiftWorked(entry))
+}
+
+const editingShift = ref<Shift | null>(null)
+
+function openEdit(entry: HistoryEntry) {
+  if (entry.kind !== 'shift') return
+  const { kind, sortKey, dateLabel, ...shift } = entry
+  editingShift.value = { ...shift, segments: shift.segments.map(s => ({ ...s })) }
+}
+
+function handleSave(updated: Shift) {
+  updateShift(updated.id, updated)
+  editingShift.value = null
 }
 </script>
 
@@ -59,6 +73,13 @@ function shiftTotal(entry: HistoryEntry): string {
             {{ shiftTotal(entry) }}
           </div>
           <button
+            v-if="entry.kind === 'shift'"
+            class="btn btn-ghost btn-sm"
+            @click="openEdit(entry)"
+          >
+            ✏ edit
+          </button>
+          <button
             v-if="entry.kind === 'holiday'"
             class="btn btn-danger btn-sm"
             @click="removeHoliday(entry.date)"
@@ -73,5 +94,12 @@ function shiftTotal(entry: HistoryEntry): string {
       <div class="empty-icon">🕐</div>
       No shifts or holidays recorded yet.
     </div>
+
+    <EditShiftModal
+      v-if="editingShift"
+      :shift="editingShift"
+      @save="handleSave"
+      @cancel="editingShift = null"
+    />
   </div>
 </template>
