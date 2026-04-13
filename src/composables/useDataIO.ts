@@ -24,7 +24,7 @@ export function useDataIO() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `timekeep-${todayDateKey()}.json`;
+    a.download = `timekeeper-${todayDateKey()}.json`;
     a.click();
     URL.revokeObjectURL(url);
   }

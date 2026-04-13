@@ -1,4 +1,4 @@
-# TimeKeep
+# TimeKeeper
 
 A lightweight, browser-based work time tracker built with Vue 3 and TypeScript. Track your shifts, manage breaks, log holidays, and keep an eye on your weekly hours target — all without an account or server.
 
@@ -15,13 +15,13 @@ A lightweight, browser-based work time tracker built with Vue 3 and TypeScript. 
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Framework | Vue 3 (Composition API) |
-| Language | TypeScript |
-| Build tool | Vite |
-| Routing | Vue Router 4 |
-| Styling | Plain CSS with CSS variables |
+| Layer      | Technology                   |
+| ---------- | ---------------------------- |
+| Framework  | Vue 3 (Composition API)      |
+| Language   | TypeScript                   |
+| Build tool | Vite                         |
+| Routing    | Vue Router 4                 |
+| Styling    | Plain CSS with CSS variables |
 
 ## Getting Started
 
@@ -62,12 +62,12 @@ npm run preview
 
 ### Tracker page
 
-| Action | How |
-|---|---|
-| Start a shift | Click **Start** |
-| Take a break | Click **Break** while a shift is active |
-| End a break | Click **Resume** |
-| End a shift | Click **End** |
+| Action        | How                                     |
+| ------------- | --------------------------------------- |
+| Start a shift | Click **Start**                         |
+| Take a break  | Click **Break** while a shift is active |
+| End a break   | Click **Resume**                        |
+| End a shift   | Click **End**                           |
 
 The timer cards show today's worked time and break time in real time. The week card at the top shows your progress towards this week's hours target.
 
@@ -84,12 +84,12 @@ The timer cards show today's worked time and break time in real time. The week c
 
 All data is persisted to `localStorage` under three keys:
 
-| Key | Contents |
-|---|---|
-| `tk_shifts` | Completed shifts |
-| `tk_current` | The active shift (if any) |
-| `tk_settings` | User settings |
-| `tk_holidays` | Holiday list |
+| Key           | Contents                  |
+| ------------- | ------------------------- |
+| `tk_shifts`   | Completed shifts          |
+| `tk_current`  | The active shift (if any) |
+| `tk_settings` | User settings             |
+| `tk_holidays` | Holiday list              |
 
 Exported JSON files follow the `ExportPayload` schema (version 2) and can be safely re-imported to merge data across devices or browsers.
 
