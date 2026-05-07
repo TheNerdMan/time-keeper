@@ -127,9 +127,12 @@ function weekDayHasWork(dayOffset: number): boolean {
 
 function isToday(dayOffset: number): boolean {
   const { start } = currentWeekRange()
+  const nowDate = new Date()
+  const dayDate = new Date(start + dayOffset * 86_400_000)
   return (
-    Math.floor(Date.now() / 86_400_000) ===
-    Math.floor((start + dayOffset * 86_400_000) / 86_400_000)
+    nowDate.getFullYear() === dayDate.getFullYear() &&
+    nowDate.getMonth() === dayDate.getMonth() &&
+    nowDate.getDate() === dayDate.getDate()
   )
 }
 
